@@ -99,7 +99,7 @@ function extractName(artifact: string): string {
 }
 
 /** Largest-remainder normalization so integer weights always sum to exactly 100. */
-function normalizeWeights(rawWeights: number[]): number[] {
+export function normalizeWeights(rawWeights: number[]): number[] {
   const total = rawWeights.reduce((sum, weight) => sum + weight, 0);
   if (total === 0) return rawWeights;
   const exact = rawWeights.map((weight) => (weight / total) * 100);

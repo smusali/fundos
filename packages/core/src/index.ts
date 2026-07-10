@@ -50,3 +50,26 @@ export { LocalObjectStorage, getStorage, type ObjectStorage } from './storage';
 export { scoreDeal } from './services/scoring';
 export { DealService, type UploadFile, type CreateDealOptions } from './services/deals';
 export { GatekeeperService, type IntakeSubmission, type IntakeGate } from './services/gatekeeper';
+export {
+  decisionOutcomeSchema,
+  decisionRowSchema,
+  realizedTypeSchema,
+  outcomeRowSchema,
+  calibrationRowSchema,
+  auditRowSchema,
+  type DecisionOutcome,
+  type DecisionRow,
+  type RealizedType,
+  type OutcomeRow,
+  type CalibrationRow,
+  type AuditRow,
+  type RecalibrationDelta,
+} from './models/ledger';
+export { getLedgerClient, closeClickHouse, LedgerRepository } from './repositories/clickhouse';
+export { LedgerService, hashEvidenceSet, provenanceToPdf, type ProvenanceExport } from './services/ledger';
+export {
+  CalibrationService,
+  computeRecalibrationDeltas,
+  applyDeltasToRubric,
+  type DimensionOutcomeRecord,
+} from './services/calibration';

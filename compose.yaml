@@ -17,6 +17,9 @@ services:
       - "8123:8123"
     environment:
       CLICKHOUSE_DB: fundos
+      CLICKHOUSE_USER: fundos_admin
+      CLICKHOUSE_PASSWORD: fundos-admin-local
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
       - clickhouse-data:/var/lib/clickhouse
     healthcheck:

@@ -1,10 +1,12 @@
 import {
+  CalibrationService,
   ensureDevSession,
   getDb,
   ThesisRepository,
   ThesisService,
   type RubricDiff,
 } from '@fundos/core';
+import { CalibrationPanel } from './calibration-panel';
 import { ThesisComposer } from './composer';
 
 export const dynamic = 'force-dynamic';
@@ -71,6 +73,7 @@ export default async function ThesisPage() {
   const active = versions[0];
   const previous = versions[1];
   const rubric = active ? service.rubricOf(active) : null;
+  const deltas = active ? await new CalibrationService(await getDb()).pendingDeltas(workspace._id) : [];
 
   return (
     <main>
@@ -139,6 +142,8 @@ export default async function ThesisPage() {
           (submissions are auto-screened against the active rubric)
         </p>
       ) : null}
+
+      <CalibrationPanel deltas={deltas} />
 
       {active && previous ? (
         <DiffView diff={service.diff(previous, active)} fromVersion={previous.version} toVersion={active.version} />
