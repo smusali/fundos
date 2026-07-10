@@ -11,7 +11,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <div className="mx-auto max-w-5xl px-6 py-8">{children}</div>
+        <div className="mx-auto max-w-5xl px-6 py-8">
+          <nav className="mb-6 flex gap-5 text-sm font-medium text-slate-600">
+            <a href="/" className="hover:text-slate-900">
+              Inbox
+            </a>
+            <a href="/thesis" className="hover:text-slate-900">
+              Thesis
+            </a>
+          </nav>
+          {children}
+        </div>
       </body>
     </html>
   );
