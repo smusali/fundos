@@ -100,8 +100,13 @@ export class ApprovalService {
     });
   }
 
-  /** Approve sends: the decide happens first, then delivery runs through the gate. */
+  /** Approve sends: deliverability is checked before deciding so a row never sticks approved-but-undelivered. */
   async approve(approvalId: string, decidedBy: string): Promise<Approval> {
+    const pending = await this.approvals.findById(approvalId);
+    if (!pending || pending.status !== 'pending') throw new Error(`no pending approval: ${approvalId}`);
+    if (pending.payload.recipient === null) {
+      throw new Error(`approval ${approvalId} has no recipient; edit the draft first`);
+    }
     const decided = await this.approvals.decide(approvalId, 'approved', decidedBy);
     if (!decided) throw new Error(`approval not found: ${approvalId}`);
     const delivered = await this.outbound.deliver(decided);

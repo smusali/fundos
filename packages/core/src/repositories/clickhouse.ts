@@ -66,9 +66,12 @@ async function prepare(): Promise<void> {
     for (const ddl of TABLE_DDL) {
       await admin().command({ query: ddl });
     }
-    const password = loadConfig().CLICKHOUSE_LEDGER_PASSWORD;
+    const password = loadConfig().CLICKHOUSE_LEDGER_PASSWORD.replace(/'/g, "\\'");
     await admin().command({
-      query: `CREATE USER OR REPLACE ${LEDGER_USER} IDENTIFIED WITH plaintext_password BY '${password.replace(/'/g, "\\'")}'`,
+      query: `CREATE USER IF NOT EXISTS ${LEDGER_USER} IDENTIFIED WITH plaintext_password BY '${password}'`,
+    });
+    await admin().command({
+      query: `ALTER USER ${LEDGER_USER} IDENTIFIED WITH plaintext_password BY '${password}'`,
     });
     await admin().command({ query: `GRANT SELECT, INSERT ON fundos.* TO ${LEDGER_USER}` });
   })();
