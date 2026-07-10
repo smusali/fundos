@@ -1,0 +1,55 @@
+name: pr
+
+on:
+  push:
+    branches: [main, develop, 'feat/**']
+  pull_request:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping:1})'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+        ports:
+          - 27017:27017
+      clickhouse:
+        image: clickhouse/clickhouse-server:24.8
+        options: >-
+          --health-cmd "clickhouse-client --query 'SELECT 1'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+        ports:
+          - 8123:8123
+        env:
+          CLICKHOUSE_DB: fundos
+          CLICKHOUSE_USER: fundos_admin
+          CLICKHOUSE_PASSWORD: fundos-admin-local
+          CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+      - name: E2E (containers and fixtures; keyed lanes skip)
+        run: npm run e2e

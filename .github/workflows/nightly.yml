@@ -1,0 +1,60 @@
+name: nightly
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  secrets-lane:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping:1})'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+        ports:
+          - 27017:27017
+      clickhouse:
+        image: clickhouse/clickhouse-server:24.8
+        options: >-
+          --health-cmd "clickhouse-client --query 'SELECT 1'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+        ports:
+          - 8123:8123
+        env:
+          CLICKHOUSE_DB: fundos
+          CLICKHOUSE_USER: fundos_admin
+          CLICKHOUSE_PASSWORD: fundos-admin-local
+          CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: E2E with real model, Exa MCP scout, Attio sandbox, and test mailbox
+        run: npm run e2e
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+          APOLLO_MCP_TOKEN: ${{ secrets.APOLLO_MCP_TOKEN }}
+          AFFINITY_API_KEY: ${{ secrets.AFFINITY_API_KEY }}
+          ATTIO_MCP_TOKEN: ${{ secrets.ATTIO_MCP_TOKEN }}
+          SMTP_URL: ${{ secrets.SMTP_URL }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
