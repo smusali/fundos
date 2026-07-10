@@ -66,7 +66,6 @@ export { OutboundService, ApprovalService, type DeliveredMessage } from './servi
 export {
   SsoSessionService,
   SettingsService,
-  slugify,
   type SessionContext,
   type WorkspaceSettingsPatch,
 } from './services/session';
