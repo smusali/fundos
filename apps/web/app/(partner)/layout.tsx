@@ -10,6 +10,9 @@ export default function PartnerLayout({ children }: { children: ReactNode }) {
         <a href="/thesis" className="hover:text-slate-900">
           Thesis
         </a>
+        <a href="/queue" className="hover:text-slate-900">
+          Approvals
+        </a>
       </nav>
       {children}
     </>

@@ -85,3 +85,4 @@ export {
 } from './models/memo';
 export { MemoRepository, ApprovalRepository } from './repositories/approvals';
 export { normalizeWeights } from './services/rubric';
+export { OutboundService, ApprovalService, type DeliveredMessage } from './services/outbound';

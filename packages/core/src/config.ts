@@ -14,6 +14,8 @@ const envSchema = z.object({
   ATTIO_MCP_TOKEN: z.string().min(1).optional(),
   GOOGLE_CLIENT_ID: z.string().min(1).optional(),
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
+  SMTP_URL: z.string().min(1).optional(),
+  MAIL_FROM: z.string().default('fundos <no-reply@fundos.local>'),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;

@@ -4,6 +4,7 @@ import { fetchCrmContext, isChatEnabled } from '@fundos/agent';
 import { ClaimStream } from './claim-stream';
 import { DealChat } from './deal-chat';
 import { DecisionPanel, OutcomePanel } from './decision-panel';
+import { DraftActions } from './draft-actions';
 
 export const dynamic = 'force-dynamic';
 
@@ -107,6 +108,8 @@ export default async function DealPage({ params }: { params: Promise<{ id: strin
           ) : null}
         </section>
       ) : null}
+      {deal.breakdown ? <DraftActions dealId={deal._id} /> : null}
+
       <section className="mt-6 rounded border border-slate-200 bg-white p-4" data-testid="crm-panel">
         <h2 className="text-lg font-medium">CRM context</h2>
         {crm && crm.connected ? (

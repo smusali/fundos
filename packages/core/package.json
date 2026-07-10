@@ -13,11 +13,13 @@
     "@fundos/pipeline": "*",
     "ioredis": "^5.11.1",
     "mongodb": "^7.5.0",
+    "nodemailer": "^9.0.3",
     "pdf-lib": "^1.17.1",
     "yaml": "^2.9.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/node": "^26.1.1"
+    "@types/node": "^26.1.1",
+    "@types/nodemailer": "^8.0.1"
   }
 }
