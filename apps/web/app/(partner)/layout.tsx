@@ -13,6 +13,9 @@ export default function PartnerLayout({ children }: { children: ReactNode }) {
         <a href="/queue" className="hover:text-slate-900">
           Approvals
         </a>
+        <a href="/settings" className="hover:text-slate-900">
+          Settings
+        </a>
       </nav>
       {children}
     </>

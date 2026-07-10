@@ -1,10 +1,11 @@
-import { ApprovalService, DealRepository, ensureDevSession, getDb, OutboundService } from '@fundos/core';
+import { ApprovalService, DealRepository, getDb, OutboundService } from '@fundos/core';
 import { QueueItem } from './queue-item';
+import { currentSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
 export default async function QueuePage() {
-  const { workspace } = await ensureDevSession();
+  const { workspace } = await currentSession();
   const db = await getDb();
   const pending = await new ApprovalService(db).listPending(workspace._id);
   const deals = new DealRepository(db);

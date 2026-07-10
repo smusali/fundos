@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { realizedTypeSchema, DealService, ensureDevSession, getDb, getStorage, LedgerService } from '@fundos/core';
+import { realizedTypeSchema, DealService, getDb, getStorage, LedgerService } from '@fundos/core';
+import { currentSession } from '@/lib/session';
 
 const bodySchema = z.object({
   realizedType: realizedTypeSchema,
@@ -15,7 +16,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!parsed.success) {
     return NextResponse.json({ error: 'realizedType, value, and period are required' }, { status: 400 });
   }
-  const { user } = await ensureDevSession();
+  const { user } = await currentSession();
   const db = await getDb();
   const deal = await new DealService(db, getStorage()).getDeal(id);
   if (!deal) {

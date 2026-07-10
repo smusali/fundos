@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { convertToModelMessages, validateUIMessages, type UIMessage } from 'ai';
-import { ensureDevSession, getDb } from '@fundos/core';
+import { getDb } from '@fundos/core';
 import { buildDealChatAgent, isChatEnabled } from '@fundos/agent';
+import { currentSession } from '@/lib/session';
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -12,7 +13,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!body.messages || body.messages.length === 0) {
     return NextResponse.json({ error: 'messages are required' }, { status: 400 });
   }
-  const { workspace, user } = await ensureDevSession();
+  const { workspace, user } = await currentSession();
   const agent = buildDealChatAgent({
     db: await getDb(),
     workspaceId: workspace._id,

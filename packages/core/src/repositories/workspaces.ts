@@ -12,9 +12,20 @@ export class WorkspaceRepository {
     return this.collection.findOne({ intakeSlug });
   }
 
+  async findById(workspaceId: string): Promise<Workspace | null> {
+    return this.collection.findOne({ _id: workspaceId });
+  }
+
   async insert(workspace: Workspace): Promise<Workspace> {
     await this.collection.insertOne(workspace);
     return workspace;
+  }
+
+  async update(
+    workspaceId: string,
+    patch: Partial<Pick<Workspace, 'fundName' | 'intakeSlug' | 'settings'>>,
+  ): Promise<void> {
+    await this.collection.updateOne({ _id: workspaceId }, { $set: patch });
   }
 }
 
@@ -33,6 +44,10 @@ export class UserRepository {
     await this.collection.insertOne(user);
     return user;
   }
+
+  async updateSettings(userId: string, settings: Record<string, unknown>): Promise<void> {
+    await this.collection.updateOne({ _id: userId }, { $set: { settings } });
+  }
 }
 
 export class MembershipRepository {
@@ -44,6 +59,10 @@ export class MembershipRepository {
 
   async findByWorkspaceAndUser(workspaceId: string, userId: string): Promise<Membership | null> {
     return this.collection.findOne({ workspaceId, userId });
+  }
+
+  async findByUser(userId: string): Promise<Membership | null> {
+    return this.collection.findOne({ userId });
   }
 
   async insert(membership: Membership): Promise<Membership> {

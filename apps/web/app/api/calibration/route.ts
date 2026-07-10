@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { CalibrationService, ensureDevSession, getDb } from '@fundos/core';
+import { CalibrationService, getDb } from '@fundos/core';
+import { currentSession } from '@/lib/session';
 
 const bodySchema = z.object({
   deltas: z.array(
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
   if (!parsed.success || parsed.data.deltas.length === 0) {
     return NextResponse.json({ error: 'deltas to approve are required' }, { status: 400 });
   }
-  const { workspace, user } = await ensureDevSession();
+  const { workspace, user } = await currentSession();
   try {
     const version = await new CalibrationService(await getDb()).applyDeltas(
       workspace._id,

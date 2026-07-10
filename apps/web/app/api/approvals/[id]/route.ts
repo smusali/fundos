@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { ApprovalService, ensureDevSession, getDb } from '@fundos/core';
+import { ApprovalService, getDb } from '@fundos/core';
+import { currentSession } from '@/lib/session';
 
 const bodySchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('approve') }),
@@ -15,7 +16,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!parsed.success) {
     return NextResponse.json({ error: 'action must be approve, reject, or edit with a body' }, { status: 400 });
   }
-  const { user } = await ensureDevSession();
+  const { user } = await currentSession();
   const service = new ApprovalService(await getDb());
   try {
     if (parsed.data.action === 'approve') {

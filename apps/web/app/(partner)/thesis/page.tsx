@@ -1,6 +1,5 @@
 import {
   CalibrationService,
-  ensureDevSession,
   getDb,
   ThesisRepository,
   ThesisService,
@@ -8,6 +7,7 @@ import {
 } from '@fundos/core';
 import { CalibrationPanel } from './calibration-panel';
 import { ThesisComposer } from './composer';
+import { currentSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
@@ -66,7 +66,7 @@ function DiffView({ diff, fromVersion, toVersion }: { diff: RubricDiff; fromVers
 }
 
 export default async function ThesisPage() {
-  const { workspace } = await ensureDevSession();
+  const { workspace } = await currentSession();
   const service = new ThesisService(new ThesisRepository(await getDb()));
   const intakePath = `/intake/${workspace.intakeSlug}`;
   const versions = await service.listVersions(workspace._id);

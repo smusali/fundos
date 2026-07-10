@@ -86,3 +86,10 @@ export {
 export { MemoRepository, ApprovalRepository } from './repositories/approvals';
 export { normalizeWeights } from './services/rubric';
 export { OutboundService, ApprovalService, type DeliveredMessage } from './services/outbound';
+export {
+  SsoSessionService,
+  SettingsService,
+  slugify,
+  type SessionContext,
+  type WorkspaceSettingsPatch,
+} from './services/session';

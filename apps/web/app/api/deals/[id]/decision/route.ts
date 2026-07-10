@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { decisionOutcomeSchema, DealService, ensureDevSession, getDb, getStorage, LedgerService } from '@fundos/core';
+import { decisionOutcomeSchema, DealService, getDb, getStorage, LedgerService } from '@fundos/core';
+import { currentSession } from '@/lib/session';
 
 const bodySchema = z.object({
   outcome: decisionOutcomeSchema,
@@ -14,7 +15,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!parsed.success) {
     return NextResponse.json({ error: 'outcome and a one-line reason are required' }, { status: 400 });
   }
-  const { user } = await ensureDevSession();
+  const { user } = await currentSession();
   const db = await getDb();
   const deal = await new DealService(db, getStorage()).getDeal(id);
   if (!deal) {

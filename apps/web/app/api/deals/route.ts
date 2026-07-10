@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { DealService, ensureDevSession, getDb, getStorage, type UploadFile } from '@fundos/core';
+import { DealService, getDb, getStorage, type UploadFile } from '@fundos/core';
+import { currentSession } from '@/lib/session';
 
 export async function POST(request: Request) {
   const form = await request.formData().catch(() => null);
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'a deck PDF is required' }, { status: 400 });
   }
 
-  const { workspace } = await ensureDevSession();
+  const { workspace } = await currentSession();
   const service = new DealService(await getDb(), getStorage());
   const deal = await service.createDeal(workspace._id, company.trim(), files);
 

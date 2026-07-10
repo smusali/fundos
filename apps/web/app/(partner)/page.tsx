@@ -1,15 +1,16 @@
 import Link from 'next/link';
-import { DealService, ensureDevSession, getDb, getStorage } from '@fundos/core';
+import { DealService, getDb, getStorage } from '@fundos/core';
 import { isScoutEnabled } from '@fundos/agent';
 import { NewDealForm } from './new-deal';
 import { ScoutPanel } from './scout-panel';
+import { currentSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
 export default async function InboxPage() {
   let session;
   try {
-    session = await ensureDevSession();
+    session = await currentSession();
   } catch (error) {
     console.error('dev session unavailable', error);
     return (
