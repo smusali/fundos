@@ -6,6 +6,7 @@ export default defineConfig({
     alias: {
       '@fundos/core': fileURLToPath(new URL('./packages/core/src/index.ts', import.meta.url)),
       '@fundos/pipeline': fileURLToPath(new URL('./packages/pipeline/src/index.ts', import.meta.url)),
+      '@fundos/agent': fileURLToPath(new URL('./packages/agent/src/index.ts', import.meta.url)),
     },
   },
   test: {

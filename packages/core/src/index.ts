@@ -73,3 +73,15 @@ export {
   applyDeltasToRubric,
   type DimensionOutcomeRecord,
 } from './services/calibration';
+export {
+  memoSchema,
+  approvalSchema,
+  approvalActionSchema,
+  canDeliver,
+  FOUNDER_FACING_ACTIONS,
+  type Memo,
+  type Approval,
+  type ApprovalAction,
+} from './models/memo';
+export { MemoRepository, ApprovalRepository } from './repositories/approvals';
+export { normalizeWeights } from './services/rubric';

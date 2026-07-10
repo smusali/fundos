@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { DealService, ensureDevSession, getDb, getStorage } from '@fundos/core';
+import { isScoutEnabled } from '@fundos/agent';
 import { NewDealForm } from './new-deal';
+import { ScoutPanel } from './scout-panel';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,7 +29,8 @@ export default async function InboxPage() {
     <main>
       <header className="flex items-baseline justify-between border-b border-slate-200 pb-4">
         <h1 className="text-2xl font-semibold">Decision Inbox</h1>
-        <span className="text-sm text-slate-500">
+        <span className="flex items-center gap-3 text-sm text-slate-500">
+          <ScoutPanel enabled={isScoutEnabled()} />
           {session.workspace.fundName} · {session.user.email}
         </span>
       </header>

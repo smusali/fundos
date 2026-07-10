@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { DealService, getDb, getStorage, LedgerService, type Evidence } from '@fundos/core';
+import { fetchCrmContext, isChatEnabled } from '@fundos/agent';
 import { ClaimStream } from './claim-stream';
+import { DealChat } from './deal-chat';
 import { DecisionPanel, OutcomePanel } from './decision-panel';
 
 export const dynamic = 'force-dynamic';
@@ -31,6 +33,7 @@ export default async function DealPage({ params }: { params: Promise<{ id: strin
     }
   }
   const decided = decisions.length > 0;
+  const crm = await fetchCrmContext(deal).catch(() => null);
 
   return (
     <main>
@@ -104,6 +107,27 @@ export default async function DealPage({ params }: { params: Promise<{ id: strin
           ) : null}
         </section>
       ) : null}
+      <section className="mt-6 rounded border border-slate-200 bg-white p-4" data-testid="crm-panel">
+        <h2 className="text-lg font-medium">CRM context</h2>
+        {crm && crm.connected ? (
+          <ul className="mt-2 space-y-1 text-sm text-slate-600">
+            {crm.touchpoints.length === 0 ? <li>No prior touchpoints found for {deal.company}.</li> : null}
+            {crm.touchpoints.map((touchpoint, index) => (
+              <li key={index}>
+                <span className="mr-1 rounded bg-slate-200 px-1.5 py-0.5 text-xs">{touchpoint.source}</span>
+                {touchpoint.summary}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-2 text-sm text-slate-500" data-testid="crm-disabled">
+            Not connected. Add AFFINITY_API_KEY or ATTIO_MCP_TOKEN to see prior touchpoints beside every score.
+          </p>
+        )}
+      </section>
+
+      <DealChat dealId={deal._id} enabled={isChatEnabled()} />
+
       {deal.status !== 'processing' ? <DecisionPanel dealId={deal._id} decided={decided} /> : null}
 
       {decisions.length > 0 ? (
