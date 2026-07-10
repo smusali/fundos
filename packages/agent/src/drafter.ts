@@ -134,12 +134,11 @@ export class Drafter {
     });
   }
 
-  private async draftOutbound(dealId: string, actionType: ApprovalAction, subject: string, body: string): Promise<Approval> {
-    const material = await this.material(dealId);
+  private async draftOutbound(material: DraftMaterial, actionType: ApprovalAction, subject: string, body: string): Promise<Approval> {
     return this.approvals.insert({
       _id: randomUUID(),
       workspaceId: material.deal.workspaceId,
-      dealId,
+      dealId: material.deal._id,
       actionType,
       payload: { subject, body, recipient: material.deal.founder?.email ?? null },
       status: 'pending',
@@ -152,12 +151,12 @@ export class Drafter {
   async draftPassNote(dealId: string): Promise<Approval> {
     const material = await this.material(dealId);
     const body = await polishWithModel(passNoteTemplate(material), 'founder pass note');
-    return this.draftOutbound(dealId, 'pass_note.send', `Update on ${material.deal.company}`, body);
+    return this.draftOutbound(material, 'pass_note.send', `Update on ${material.deal.company}`, body);
   }
 
   async draftAdvanceRequest(dealId: string): Promise<Approval> {
     const material = await this.material(dealId);
     const body = await polishWithModel(advanceRequestTemplate(material), 'materials request');
-    return this.draftOutbound(dealId, 'advance_request.send', `Next steps for ${material.deal.company}`, body);
+    return this.draftOutbound(material, 'advance_request.send', `Next steps for ${material.deal.company}`, body);
   }
 }

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getDb } from '@fundos/core';
 import { Drafter } from '@fundos/agent';
+import { currentSession } from '@/lib/session';
 
 const bodySchema = z.object({ type: z.enum(['memo', 'pass_note', 'advance_request']) });
 
@@ -12,6 +13,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!parsed.success) {
     return NextResponse.json({ error: 'type must be memo, pass_note, or advance_request' }, { status: 400 });
   }
+  await currentSession();
   const drafter = new Drafter(await getDb());
   try {
     if (parsed.data.type === 'memo') {

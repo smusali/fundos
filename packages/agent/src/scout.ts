@@ -95,9 +95,10 @@ export class Scout {
         .flatMap((dimension) => dimension.criteria.slice(0, 1))
         .join('; ')}`.slice(0, 380);
       const tools = await client.tools();
-      const search =
-        tools['web_search_exa'] ?? tools['search'] ?? Object.values(tools).find((candidate) => candidate !== undefined);
-      if (!search?.execute) throw new Error('no usable Exa search tool exposed');
+      const search = tools['web_search_exa'] ?? tools['web_search'] ?? tools['search'];
+      if (!search?.execute) {
+        throw new Error(`no known Exa search tool exposed; server offers: ${Object.keys(tools).join(', ')}`);
+      }
       const raw: unknown = await search.execute(
         { query, numResults: MAX_CANDIDATES },
         { toolCallId: 'scout-run', messages: [], context: undefined },

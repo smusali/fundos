@@ -1,4 +1,5 @@
 import { readProgress } from '@fundos/core';
+import { currentSession } from '@/lib/session';
 
 const POLL_INTERVAL_MS = 400;
 const MAX_STREAM_MS = 5 * 60 * 1_000;
@@ -6,6 +7,7 @@ const MAX_STREAM_MS = 5 * 60 * 1_000;
 /** Server-sent events bridge: relays the deal's Redis progress stream to the browser. */
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  await currentSession();
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({

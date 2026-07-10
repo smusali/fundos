@@ -16,6 +16,7 @@ const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
   SMTP_URL: z.string().min(1).optional(),
   MAIL_FROM: z.string().default('fundos <no-reply@fundos.local>'),
+  S3_BUCKET: z.string().min(1).optional(),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;
