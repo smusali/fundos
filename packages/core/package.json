@@ -9,6 +9,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@fundos/pipeline": "*",
+    "ioredis": "^5.11.1",
     "mongodb": "^7.5.0",
     "yaml": "^2.9.0",
     "zod": "^4.4.3"

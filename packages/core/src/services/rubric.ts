@@ -163,6 +163,20 @@ export function compileThesis(artifact: string): Rubric {
   return { name: extractName(artifact), dimensions: ordered, disqualifiers };
 }
 
+/** Matches free text to the dimension family it most plausibly evidences. */
+export function matchDimension(text: string): string | null {
+  let bestKey: string | null = null;
+  let bestScore = 0;
+  for (const family of DIMENSION_FAMILIES) {
+    const score = familyScore(family, text);
+    if (score > bestScore) {
+      bestKey = family.key;
+      bestScore = score;
+    }
+  }
+  return bestKey;
+}
+
 export function rubricToYaml(rubric: Rubric): string {
   return stringify(rubric);
 }

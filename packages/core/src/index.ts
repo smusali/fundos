@@ -26,5 +26,24 @@ export {
   type Thesis,
 } from './models/thesis';
 export { ThesisRepository } from './repositories/theses';
-export { compileThesis, diffRubrics, rubricFromYaml, rubricToYaml } from './services/rubric';
+export { compileThesis, diffRubrics, matchDimension, rubricFromYaml, rubricToYaml } from './services/rubric';
 export { ThesisService } from './services/thesis';
+export {
+  pageRefSchema,
+  dealSchema,
+  dealDocumentSchema,
+  evidenceSchema,
+  fitScoreBreakdownSchema,
+  type PageRef,
+  type Deal,
+  type DealStatus,
+  type DealDocument,
+  type Evidence,
+  type DimensionScore,
+  type FitScoreBreakdown,
+} from './models/deal';
+export { DealRepository, DocumentRepository, EvidenceRepository } from './repositories/deals';
+export { getRedis, closeRedis, publishProgress, readProgress, type ProgressEntry } from './repositories/redis';
+export { LocalObjectStorage, getStorage, type ObjectStorage } from './storage';
+export { scoreDeal } from './services/scoring';
+export { DealService, type UploadFile } from './services/deals';
