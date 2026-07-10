@@ -32,11 +32,20 @@ export const fitScoreBreakdownSchema = z.object({
 
 export type FitScoreBreakdown = z.infer<typeof fitScoreBreakdownSchema>;
 
+export const founderContactSchema = z.object({
+  name: z.string(),
+  email: z.string(),
+  summary: z.string(),
+});
+
+export type FounderContact = z.infer<typeof founderContactSchema>;
+
 export const dealSchema = z.object({
   _id: z.string(),
   workspaceId: z.string(),
   company: z.string(),
   source: z.enum(['upload', 'gatekeeper', 'scout']),
+  founder: founderContactSchema.nullable(),
   fitScore: z.number().int().min(0).max(100).nullable(),
   thesisVersion: z.number().int().min(1).nullable(),
   breakdown: fitScoreBreakdownSchema.nullable(),

@@ -16,6 +16,20 @@ export interface UploadFile {
   bytes: Buffer;
 }
 
+export interface CreateDealOptions {
+  source?: Deal['source'];
+  founder?: Deal['founder'];
+}
+
+const STATUS_RANK: Record<Deal['status'], number> = {
+  scored: 0,
+  processing: 1,
+  failed: 2,
+  advanced: 3,
+  invested: 3,
+  passed: 3,
+};
+
 export class DealService {
   private readonly deals: DealRepository;
   private readonly documents: DocumentRepository;
@@ -33,12 +47,18 @@ export class DealService {
   }
 
   /** Persists the deal and its documents; extraction runs separately via processDeal. */
-  async createDeal(workspaceId: string, company: string, files: UploadFile[]): Promise<Deal> {
+  async createDeal(
+    workspaceId: string,
+    company: string,
+    files: UploadFile[],
+    options: CreateDealOptions = {},
+  ): Promise<Deal> {
     const deal = await this.deals.insert({
       _id: randomUUID(),
       workspaceId,
       company,
-      source: 'upload',
+      source: options.source ?? 'upload',
+      founder: options.founder ?? null,
       fitScore: null,
       thesisVersion: null,
       breakdown: null,
@@ -66,8 +86,15 @@ export class DealService {
     return this.deals.findById(dealId);
   }
 
+  /** Inbox ordering: undecided scored deals first by Fit Score, then in-flight, then decided. */
   async listDeals(workspaceId: string): Promise<Deal[]> {
-    return this.deals.listByWorkspace(workspaceId);
+    const deals = await this.deals.listByWorkspace(workspaceId);
+    return deals.sort(
+      (a, b) =>
+        STATUS_RANK[a.status] - STATUS_RANK[b.status] ||
+        (b.fitScore ?? -1) - (a.fitScore ?? -1) ||
+        b.createdAt.getTime() - a.createdAt.getTime(),
+    );
   }
 
   async listDocuments(dealId: string): Promise<DealDocument[]> {

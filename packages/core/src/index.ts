@@ -34,6 +34,7 @@ export {
   dealDocumentSchema,
   evidenceSchema,
   fitScoreBreakdownSchema,
+  founderContactSchema,
   type PageRef,
   type Deal,
   type DealStatus,
@@ -41,9 +42,11 @@ export {
   type Evidence,
   type DimensionScore,
   type FitScoreBreakdown,
+  type FounderContact,
 } from './models/deal';
 export { DealRepository, DocumentRepository, EvidenceRepository } from './repositories/deals';
 export { getRedis, closeRedis, publishProgress, readProgress, type ProgressEntry } from './repositories/redis';
 export { LocalObjectStorage, getStorage, type ObjectStorage } from './storage';
 export { scoreDeal } from './services/scoring';
-export { DealService, type UploadFile } from './services/deals';
+export { DealService, type UploadFile, type CreateDealOptions } from './services/deals';
+export { GatekeeperService, type IntakeSubmission, type IntakeGate } from './services/gatekeeper';

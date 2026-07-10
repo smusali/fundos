@@ -66,6 +66,7 @@ function DiffView({ diff, fromVersion, toVersion }: { diff: RubricDiff; fromVers
 export default async function ThesisPage() {
   const { workspace } = await ensureDevSession();
   const service = new ThesisService(new ThesisRepository(await getDb()));
+  const intakePath = `/intake/${workspace.intakeSlug}`;
   const versions = await service.listVersions(workspace._id);
   const active = versions[0];
   const previous = versions[1];
@@ -128,6 +129,16 @@ export default async function ThesisPage() {
       ) : (
         <p className="mt-8 text-sm text-slate-500">No rubric yet. Paste a thesis artifact above.</p>
       )}
+
+      {active ? (
+        <p className="mt-4 text-sm text-slate-600" data-testid="intake-link">
+          Founder intake link:{' '}
+          <a href={intakePath} className="font-mono text-blue-700 underline">
+            {intakePath}
+          </a>{' '}
+          (submissions are auto-screened against the active rubric)
+        </p>
+      ) : null}
 
       {active && previous ? (
         <DiffView diff={service.diff(previous, active)} fromVersion={previous.version} toVersion={active.version} />

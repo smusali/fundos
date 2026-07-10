@@ -28,6 +28,11 @@ export default async function DealPage({ params }: { params: Promise<{ id: strin
             {documents.length} document{documents.length === 1 ? '' : 's'} · source: {deal.source} · status:{' '}
             {deal.status}
           </p>
+          {deal.founder ? (
+            <p className="mt-1 text-sm text-slate-500" data-testid="founder-contact">
+              Founder: {deal.founder.name} ({deal.founder.email}) · {deal.founder.summary}
+            </p>
+          ) : null}
         </div>
         {deal.fitScore !== null ? (
           <div className="text-right" data-testid="fit-score">
