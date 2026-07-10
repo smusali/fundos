@@ -1,0 +1,19 @@
+{
+  "name": "@fundos/agent",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.11",
+    "@ai-sdk/mcp": "^2.0.10",
+    "@fundos/core": "*",
+    "@fundos/pipeline": "*",
+    "ai": "^7.0.19",
+    "zod": "^4.4.3"
+  }
+}

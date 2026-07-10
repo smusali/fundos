@@ -1,0 +1,28 @@
+# local-only idea folder
+.docs/
+
+# environment
+.env
+.env.local
+.env.*.local
+
+# dependencies
+node_modules/
+
+# builds
+.next/
+dist/
+out/
+*.tsbuildinfo
+
+# sst
+.sst/
+.open-next/
+
+# runtime data
+.uploads/
+.outbox/
+
+# logs and OS noise
+*.log
+.DS_Store
