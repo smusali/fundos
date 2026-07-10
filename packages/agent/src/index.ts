@@ -1,4 +1,4 @@
-export { mcpEndpoint, isMCPConfigured, connectMCP, type MCPProvider } from './mcp';
+export { isMCPConfigured, connectMCP, type MCPProvider } from './mcp';
 export { fetchCrmContext, type CrmContext, type CrmTouchpoint } from './context-agent';
 export { Drafter } from './drafter';
 export { Scout, isScoutEnabled, type ScoutCandidate } from './scout';

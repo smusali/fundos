@@ -1,12 +1,5 @@
 export { loadConfig, type AppConfig } from './config';
-export {
-  workspaceSchema,
-  userSchema,
-  membershipSchema,
-  type Workspace,
-  type User,
-  type Membership,
-} from './models/workspace';
+export { type Workspace, type User, type Membership } from './models/workspace';
 export { getDb, closeMongo } from './repositories/mongo';
 export {
   WorkspaceRepository,
@@ -15,9 +8,6 @@ export {
 } from './repositories/workspaces';
 export { ensureDevSession, type DevSession } from './services/dev-session';
 export {
-  rubricDimensionSchema,
-  rubricSchema,
-  thesisSchema,
   type Rubric,
   type RubricDimension,
   type RubricDiff,
@@ -26,15 +16,16 @@ export {
   type Thesis,
 } from './models/thesis';
 export { ThesisRepository } from './repositories/theses';
-export { compileThesis, diffRubrics, matchDimension, rubricFromYaml, rubricToYaml } from './services/rubric';
+export {
+  compileThesis,
+  diffRubrics,
+  matchDimension,
+  normalizeWeights,
+  rubricFromYaml,
+  rubricToYaml,
+} from './services/rubric';
 export { ThesisService } from './services/thesis';
 export {
-  pageRefSchema,
-  dealSchema,
-  dealDocumentSchema,
-  evidenceSchema,
-  fitScoreBreakdownSchema,
-  founderContactSchema,
   type PageRef,
   type Deal,
   type DealStatus,
@@ -52,11 +43,7 @@ export { DealService, type UploadFile, type CreateDealOptions } from './services
 export { GatekeeperService, type IntakeSubmission, type IntakeGate } from './services/gatekeeper';
 export {
   decisionOutcomeSchema,
-  decisionRowSchema,
   realizedTypeSchema,
-  outcomeRowSchema,
-  calibrationRowSchema,
-  auditRowSchema,
   type DecisionOutcome,
   type DecisionRow,
   type RealizedType,
@@ -73,18 +60,8 @@ export {
   applyDeltasToRubric,
   type DimensionOutcomeRecord,
 } from './services/calibration';
-export {
-  memoSchema,
-  approvalSchema,
-  approvalActionSchema,
-  canDeliver,
-  FOUNDER_FACING_ACTIONS,
-  type Memo,
-  type Approval,
-  type ApprovalAction,
-} from './models/memo';
+export { canDeliver, FOUNDER_FACING_ACTIONS, type Memo, type Approval, type ApprovalAction } from './models/memo';
 export { MemoRepository, ApprovalRepository } from './repositories/approvals';
-export { normalizeWeights } from './services/rubric';
 export { OutboundService, ApprovalService, type DeliveredMessage } from './services/outbound';
 export {
   SsoSessionService,

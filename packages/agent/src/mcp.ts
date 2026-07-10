@@ -13,7 +13,7 @@ interface MCPEndpoint {
  * A provider without its credential returns null and its features render
  * disabled instead of failing.
  */
-export function mcpEndpoint(provider: MCPProvider): MCPEndpoint | null {
+function mcpEndpoint(provider: MCPProvider): MCPEndpoint | null {
   const config = loadConfig();
   switch (provider) {
     case 'exa':
